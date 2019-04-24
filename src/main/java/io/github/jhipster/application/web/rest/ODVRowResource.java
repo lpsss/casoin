@@ -1,8 +1,8 @@
 package io.github.jhipster.application.web.rest;
-import io.github.jhipster.application.domain.ODVRow;
-import io.github.jhipster.application.repository.ODVRowRepository;
+import io.github.jhipster.application.service.ODVRowService;
 import io.github.jhipster.application.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.application.web.rest.util.HeaderUtil;
+import io.github.jhipster.application.service.dto.ODVRowDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,26 +26,26 @@ public class ODVRowResource {
 
     private static final String ENTITY_NAME = "oDVRow";
 
-    private final ODVRowRepository oDVRowRepository;
+    private final ODVRowService oDVRowService;
 
-    public ODVRowResource(ODVRowRepository oDVRowRepository) {
-        this.oDVRowRepository = oDVRowRepository;
+    public ODVRowResource(ODVRowService oDVRowService) {
+        this.oDVRowService = oDVRowService;
     }
 
     /**
      * POST  /odv-rows : Create a new oDVRow.
      *
-     * @param oDVRow the oDVRow to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new oDVRow, or with status 400 (Bad Request) if the oDVRow has already an ID
+     * @param oDVRowDTO the oDVRowDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new oDVRowDTO, or with status 400 (Bad Request) if the oDVRow has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/odv-rows")
-    public ResponseEntity<ODVRow> createODVRow(@RequestBody ODVRow oDVRow) throws URISyntaxException {
-        log.debug("REST request to save ODVRow : {}", oDVRow);
-        if (oDVRow.getId() != null) {
+    public ResponseEntity<ODVRowDTO> createODVRow(@RequestBody ODVRowDTO oDVRowDTO) throws URISyntaxException {
+        log.debug("REST request to save ODVRow : {}", oDVRowDTO);
+        if (oDVRowDTO.getId() != null) {
             throw new BadRequestAlertException("A new oDVRow cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ODVRow result = oDVRowRepository.save(oDVRow);
+        ODVRowDTO result = oDVRowService.save(oDVRowDTO);
         return ResponseEntity.created(new URI("/api/odv-rows/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -54,21 +54,21 @@ public class ODVRowResource {
     /**
      * PUT  /odv-rows : Updates an existing oDVRow.
      *
-     * @param oDVRow the oDVRow to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated oDVRow,
-     * or with status 400 (Bad Request) if the oDVRow is not valid,
-     * or with status 500 (Internal Server Error) if the oDVRow couldn't be updated
+     * @param oDVRowDTO the oDVRowDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated oDVRowDTO,
+     * or with status 400 (Bad Request) if the oDVRowDTO is not valid,
+     * or with status 500 (Internal Server Error) if the oDVRowDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/odv-rows")
-    public ResponseEntity<ODVRow> updateODVRow(@RequestBody ODVRow oDVRow) throws URISyntaxException {
-        log.debug("REST request to update ODVRow : {}", oDVRow);
-        if (oDVRow.getId() == null) {
+    public ResponseEntity<ODVRowDTO> updateODVRow(@RequestBody ODVRowDTO oDVRowDTO) throws URISyntaxException {
+        log.debug("REST request to update ODVRow : {}", oDVRowDTO);
+        if (oDVRowDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        ODVRow result = oDVRowRepository.save(oDVRow);
+        ODVRowDTO result = oDVRowService.save(oDVRowDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, oDVRow.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, oDVRowDTO.getId().toString()))
             .body(result);
     }
 
@@ -78,34 +78,34 @@ public class ODVRowResource {
      * @return the ResponseEntity with status 200 (OK) and the list of oDVRows in body
      */
     @GetMapping("/odv-rows")
-    public List<ODVRow> getAllODVRows() {
+    public List<ODVRowDTO> getAllODVRows() {
         log.debug("REST request to get all ODVRows");
-        return oDVRowRepository.findAll();
+        return oDVRowService.findAll();
     }
 
     /**
      * GET  /odv-rows/:id : get the "id" oDVRow.
      *
-     * @param id the id of the oDVRow to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the oDVRow, or with status 404 (Not Found)
+     * @param id the id of the oDVRowDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the oDVRowDTO, or with status 404 (Not Found)
      */
     @GetMapping("/odv-rows/{id}")
-    public ResponseEntity<ODVRow> getODVRow(@PathVariable Long id) {
+    public ResponseEntity<ODVRowDTO> getODVRow(@PathVariable Long id) {
         log.debug("REST request to get ODVRow : {}", id);
-        Optional<ODVRow> oDVRow = oDVRowRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(oDVRow);
+        Optional<ODVRowDTO> oDVRowDTO = oDVRowService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(oDVRowDTO);
     }
 
     /**
      * DELETE  /odv-rows/:id : delete the "id" oDVRow.
      *
-     * @param id the id of the oDVRow to delete
+     * @param id the id of the oDVRowDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/odv-rows/{id}")
     public ResponseEntity<Void> deleteODVRow(@PathVariable Long id) {
         log.debug("REST request to delete ODVRow : {}", id);
-        oDVRowRepository.deleteById(id);
+        oDVRowService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

@@ -15,14 +15,14 @@
                 </dd>
                 <dt><span>O DA Head</span></dt>
                 <dd>
-                    <div *ngIf="oDARow.oDAHead">
-                        <a [routerLink]="['/oda-head', oDARow.oDAHead?.id, 'view']">{{oDARow.oDAHead?.id}}</a>
+                    <div *ngIf="oDARow.oDAHeadId">
+                        <a [routerLink]="['/oda-head', oDARow.oDAHeadId, 'view']">{{oDARow.oDAHeadId}}</a>
                     </div>
                 </dd>
                 <dt><span>Product</span></dt>
                 <dd>
-                    <div *ngIf="oDARow.product">
-                        <a [routerLink]="['/product', oDARow.product?.id, 'view']">{{oDARow.product?.id}}</a>
+                    <div *ngIf="oDARow.productId">
+                        <a [routerLink]="['/product', oDARow.productId, 'view']">{{oDARow.productId}}</a>
                     </div>
                 </dd>
             </dl>

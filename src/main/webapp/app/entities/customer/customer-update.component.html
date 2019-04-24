@@ -32,9 +32,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_oDAHead">O DA Head</label>
-                    <select class="form-control" id="field_oDAHead" name="oDAHead" [(ngModel)]="customer.oDAHead" >
+                    <select class="form-control" id="field_oDAHead" name="oDAHead" [(ngModel)]="customer.oDAHeadId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="oDAHeadOption.id === customer.oDAHead?.id ? customer.oDAHead : oDAHeadOption" *ngFor="let oDAHeadOption of odaheads; trackBy: trackODAHeadById">{{oDAHeadOption.id}}</option>
+                        <option [ngValue]="oDAHeadOption.id" *ngFor="let oDAHeadOption of odaheads; trackBy: trackODAHeadById">{{oDAHeadOption.id}}</option>
                     </select>
                 </div>
             </div>

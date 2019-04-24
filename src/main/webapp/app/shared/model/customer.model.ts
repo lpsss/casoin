@@ -1,12 +1,10 @@
-import { IODAHead } from 'app/shared/model/oda-head.model';
-
 export interface ICustomer {
     id?: number;
     nome?: string;
     cognome?: string;
     telefono?: string;
     mail?: string;
-    oDAHead?: IODAHead;
+    oDAHeadId?: number;
 }
 
 export class Customer implements ICustomer {
@@ -16,6 +14,6 @@ export class Customer implements ICustomer {
         public cognome?: string,
         public telefono?: string,
         public mail?: string,
-        public oDAHead?: IODAHead
+        public oDAHeadId?: number
     ) {}
 }

@@ -4,6 +4,9 @@ import io.github.jhipster.application.CasoinApp;
 
 import io.github.jhipster.application.domain.Supplier;
 import io.github.jhipster.application.repository.SupplierRepository;
+import io.github.jhipster.application.service.SupplierService;
+import io.github.jhipster.application.service.dto.SupplierDTO;
+import io.github.jhipster.application.service.mapper.SupplierMapper;
 import io.github.jhipster.application.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -59,6 +62,12 @@ public class SupplierResourceIntTest {
     private SupplierRepository supplierRepository;
 
     @Autowired
+    private SupplierMapper supplierMapper;
+
+    @Autowired
+    private SupplierService supplierService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -80,7 +89,7 @@ public class SupplierResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SupplierResource supplierResource = new SupplierResource(supplierRepository);
+        final SupplierResource supplierResource = new SupplierResource(supplierService);
         this.restSupplierMockMvc = MockMvcBuilders.standaloneSetup(supplierResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -116,9 +125,10 @@ public class SupplierResourceIntTest {
         int databaseSizeBeforeCreate = supplierRepository.findAll().size();
 
         // Create the Supplier
+        SupplierDTO supplierDTO = supplierMapper.toDto(supplier);
         restSupplierMockMvc.perform(post("/api/suppliers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(supplier)))
+            .content(TestUtil.convertObjectToJsonBytes(supplierDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Supplier in the database
@@ -139,11 +149,12 @@ public class SupplierResourceIntTest {
 
         // Create the Supplier with an existing ID
         supplier.setId(1L);
+        SupplierDTO supplierDTO = supplierMapper.toDto(supplier);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSupplierMockMvc.perform(post("/api/suppliers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(supplier)))
+            .content(TestUtil.convertObjectToJsonBytes(supplierDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Supplier in the database
@@ -213,10 +224,11 @@ public class SupplierResourceIntTest {
             .piva(UPDATED_PIVA)
             .ragSociale(UPDATED_RAG_SOCIALE)
             .indirizzo(UPDATED_INDIRIZZO);
+        SupplierDTO supplierDTO = supplierMapper.toDto(updatedSupplier);
 
         restSupplierMockMvc.perform(put("/api/suppliers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSupplier)))
+            .content(TestUtil.convertObjectToJsonBytes(supplierDTO)))
             .andExpect(status().isOk());
 
         // Validate the Supplier in the database
@@ -236,11 +248,12 @@ public class SupplierResourceIntTest {
         int databaseSizeBeforeUpdate = supplierRepository.findAll().size();
 
         // Create the Supplier
+        SupplierDTO supplierDTO = supplierMapper.toDto(supplier);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSupplierMockMvc.perform(put("/api/suppliers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(supplier)))
+            .content(TestUtil.convertObjectToJsonBytes(supplierDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Supplier in the database
@@ -279,5 +292,28 @@ public class SupplierResourceIntTest {
         assertThat(supplier1).isNotEqualTo(supplier2);
         supplier1.setId(null);
         assertThat(supplier1).isNotEqualTo(supplier2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(SupplierDTO.class);
+        SupplierDTO supplierDTO1 = new SupplierDTO();
+        supplierDTO1.setId(1L);
+        SupplierDTO supplierDTO2 = new SupplierDTO();
+        assertThat(supplierDTO1).isNotEqualTo(supplierDTO2);
+        supplierDTO2.setId(supplierDTO1.getId());
+        assertThat(supplierDTO1).isEqualTo(supplierDTO2);
+        supplierDTO2.setId(2L);
+        assertThat(supplierDTO1).isNotEqualTo(supplierDTO2);
+        supplierDTO1.setId(null);
+        assertThat(supplierDTO1).isNotEqualTo(supplierDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(supplierMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(supplierMapper.fromId(null)).isNull();
     }
 }

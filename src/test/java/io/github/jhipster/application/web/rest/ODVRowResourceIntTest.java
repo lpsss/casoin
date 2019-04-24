@@ -4,6 +4,9 @@ import io.github.jhipster.application.CasoinApp;
 
 import io.github.jhipster.application.domain.ODVRow;
 import io.github.jhipster.application.repository.ODVRowRepository;
+import io.github.jhipster.application.service.ODVRowService;
+import io.github.jhipster.application.service.dto.ODVRowDTO;
+import io.github.jhipster.application.service.mapper.ODVRowMapper;
 import io.github.jhipster.application.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -51,6 +54,12 @@ public class ODVRowResourceIntTest {
     private ODVRowRepository oDVRowRepository;
 
     @Autowired
+    private ODVRowMapper oDVRowMapper;
+
+    @Autowired
+    private ODVRowService oDVRowService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +81,7 @@ public class ODVRowResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ODVRowResource oDVRowResource = new ODVRowResource(oDVRowRepository);
+        final ODVRowResource oDVRowResource = new ODVRowResource(oDVRowService);
         this.restODVRowMockMvc = MockMvcBuilders.standaloneSetup(oDVRowResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -105,9 +114,10 @@ public class ODVRowResourceIntTest {
         int databaseSizeBeforeCreate = oDVRowRepository.findAll().size();
 
         // Create the ODVRow
+        ODVRowDTO oDVRowDTO = oDVRowMapper.toDto(oDVRow);
         restODVRowMockMvc.perform(post("/api/odv-rows")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDVRow)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVRowDTO)))
             .andExpect(status().isCreated());
 
         // Validate the ODVRow in the database
@@ -125,11 +135,12 @@ public class ODVRowResourceIntTest {
 
         // Create the ODVRow with an existing ID
         oDVRow.setId(1L);
+        ODVRowDTO oDVRowDTO = oDVRowMapper.toDto(oDVRow);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restODVRowMockMvc.perform(post("/api/odv-rows")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDVRow)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVRowDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ODVRow in the database
@@ -190,10 +201,11 @@ public class ODVRowResourceIntTest {
         updatedODVRow
             .qta(UPDATED_QTA)
             .costo(UPDATED_COSTO);
+        ODVRowDTO oDVRowDTO = oDVRowMapper.toDto(updatedODVRow);
 
         restODVRowMockMvc.perform(put("/api/odv-rows")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedODVRow)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVRowDTO)))
             .andExpect(status().isOk());
 
         // Validate the ODVRow in the database
@@ -210,11 +222,12 @@ public class ODVRowResourceIntTest {
         int databaseSizeBeforeUpdate = oDVRowRepository.findAll().size();
 
         // Create the ODVRow
+        ODVRowDTO oDVRowDTO = oDVRowMapper.toDto(oDVRow);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restODVRowMockMvc.perform(put("/api/odv-rows")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDVRow)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVRowDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ODVRow in the database
@@ -253,5 +266,28 @@ public class ODVRowResourceIntTest {
         assertThat(oDVRow1).isNotEqualTo(oDVRow2);
         oDVRow1.setId(null);
         assertThat(oDVRow1).isNotEqualTo(oDVRow2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ODVRowDTO.class);
+        ODVRowDTO oDVRowDTO1 = new ODVRowDTO();
+        oDVRowDTO1.setId(1L);
+        ODVRowDTO oDVRowDTO2 = new ODVRowDTO();
+        assertThat(oDVRowDTO1).isNotEqualTo(oDVRowDTO2);
+        oDVRowDTO2.setId(oDVRowDTO1.getId());
+        assertThat(oDVRowDTO1).isEqualTo(oDVRowDTO2);
+        oDVRowDTO2.setId(2L);
+        assertThat(oDVRowDTO1).isNotEqualTo(oDVRowDTO2);
+        oDVRowDTO1.setId(null);
+        assertThat(oDVRowDTO1).isNotEqualTo(oDVRowDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(oDVRowMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(oDVRowMapper.fromId(null)).isNull();
     }
 }

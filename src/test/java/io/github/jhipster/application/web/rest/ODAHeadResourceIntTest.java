@@ -4,6 +4,9 @@ import io.github.jhipster.application.CasoinApp;
 
 import io.github.jhipster.application.domain.ODAHead;
 import io.github.jhipster.application.repository.ODAHeadRepository;
+import io.github.jhipster.application.service.ODAHeadService;
+import io.github.jhipster.application.service.dto.ODAHeadDTO;
+import io.github.jhipster.application.service.mapper.ODAHeadMapper;
 import io.github.jhipster.application.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -55,6 +58,12 @@ public class ODAHeadResourceIntTest {
     private ODAHeadRepository oDAHeadRepository;
 
     @Autowired
+    private ODAHeadMapper oDAHeadMapper;
+
+    @Autowired
+    private ODAHeadService oDAHeadService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -76,7 +85,7 @@ public class ODAHeadResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ODAHeadResource oDAHeadResource = new ODAHeadResource(oDAHeadRepository);
+        final ODAHeadResource oDAHeadResource = new ODAHeadResource(oDAHeadService);
         this.restODAHeadMockMvc = MockMvcBuilders.standaloneSetup(oDAHeadResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -110,9 +119,10 @@ public class ODAHeadResourceIntTest {
         int databaseSizeBeforeCreate = oDAHeadRepository.findAll().size();
 
         // Create the ODAHead
+        ODAHeadDTO oDAHeadDTO = oDAHeadMapper.toDto(oDAHead);
         restODAHeadMockMvc.perform(post("/api/oda-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDAHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDAHeadDTO)))
             .andExpect(status().isCreated());
 
         // Validate the ODAHead in the database
@@ -131,11 +141,12 @@ public class ODAHeadResourceIntTest {
 
         // Create the ODAHead with an existing ID
         oDAHead.setId(1L);
+        ODAHeadDTO oDAHeadDTO = oDAHeadMapper.toDto(oDAHead);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restODAHeadMockMvc.perform(post("/api/oda-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDAHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDAHeadDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ODAHead in the database
@@ -199,10 +210,11 @@ public class ODAHeadResourceIntTest {
             .nrFt(UPDATED_NR_FT)
             .dataFattura(UPDATED_DATA_FATTURA)
             .totaleFt(UPDATED_TOTALE_FT);
+        ODAHeadDTO oDAHeadDTO = oDAHeadMapper.toDto(updatedODAHead);
 
         restODAHeadMockMvc.perform(put("/api/oda-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedODAHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDAHeadDTO)))
             .andExpect(status().isOk());
 
         // Validate the ODAHead in the database
@@ -220,11 +232,12 @@ public class ODAHeadResourceIntTest {
         int databaseSizeBeforeUpdate = oDAHeadRepository.findAll().size();
 
         // Create the ODAHead
+        ODAHeadDTO oDAHeadDTO = oDAHeadMapper.toDto(oDAHead);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restODAHeadMockMvc.perform(put("/api/oda-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDAHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDAHeadDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ODAHead in the database
@@ -263,5 +276,28 @@ public class ODAHeadResourceIntTest {
         assertThat(oDAHead1).isNotEqualTo(oDAHead2);
         oDAHead1.setId(null);
         assertThat(oDAHead1).isNotEqualTo(oDAHead2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ODAHeadDTO.class);
+        ODAHeadDTO oDAHeadDTO1 = new ODAHeadDTO();
+        oDAHeadDTO1.setId(1L);
+        ODAHeadDTO oDAHeadDTO2 = new ODAHeadDTO();
+        assertThat(oDAHeadDTO1).isNotEqualTo(oDAHeadDTO2);
+        oDAHeadDTO2.setId(oDAHeadDTO1.getId());
+        assertThat(oDAHeadDTO1).isEqualTo(oDAHeadDTO2);
+        oDAHeadDTO2.setId(2L);
+        assertThat(oDAHeadDTO1).isNotEqualTo(oDAHeadDTO2);
+        oDAHeadDTO1.setId(null);
+        assertThat(oDAHeadDTO1).isNotEqualTo(oDAHeadDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(oDAHeadMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(oDAHeadMapper.fromId(null)).isNull();
     }
 }

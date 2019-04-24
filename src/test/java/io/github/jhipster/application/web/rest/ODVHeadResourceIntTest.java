@@ -4,6 +4,9 @@ import io.github.jhipster.application.CasoinApp;
 
 import io.github.jhipster.application.domain.ODVHead;
 import io.github.jhipster.application.repository.ODVHeadRepository;
+import io.github.jhipster.application.service.ODVHeadService;
+import io.github.jhipster.application.service.dto.ODVHeadDTO;
+import io.github.jhipster.application.service.mapper.ODVHeadMapper;
 import io.github.jhipster.application.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -55,6 +58,12 @@ public class ODVHeadResourceIntTest {
     private ODVHeadRepository oDVHeadRepository;
 
     @Autowired
+    private ODVHeadMapper oDVHeadMapper;
+
+    @Autowired
+    private ODVHeadService oDVHeadService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -76,7 +85,7 @@ public class ODVHeadResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ODVHeadResource oDVHeadResource = new ODVHeadResource(oDVHeadRepository);
+        final ODVHeadResource oDVHeadResource = new ODVHeadResource(oDVHeadService);
         this.restODVHeadMockMvc = MockMvcBuilders.standaloneSetup(oDVHeadResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -110,9 +119,10 @@ public class ODVHeadResourceIntTest {
         int databaseSizeBeforeCreate = oDVHeadRepository.findAll().size();
 
         // Create the ODVHead
+        ODVHeadDTO oDVHeadDTO = oDVHeadMapper.toDto(oDVHead);
         restODVHeadMockMvc.perform(post("/api/odv-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDVHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVHeadDTO)))
             .andExpect(status().isCreated());
 
         // Validate the ODVHead in the database
@@ -131,11 +141,12 @@ public class ODVHeadResourceIntTest {
 
         // Create the ODVHead with an existing ID
         oDVHead.setId(1L);
+        ODVHeadDTO oDVHeadDTO = oDVHeadMapper.toDto(oDVHead);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restODVHeadMockMvc.perform(post("/api/odv-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDVHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVHeadDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ODVHead in the database
@@ -199,10 +210,11 @@ public class ODVHeadResourceIntTest {
             .nrFt(UPDATED_NR_FT)
             .dataFattura(UPDATED_DATA_FATTURA)
             .totaleFt(UPDATED_TOTALE_FT);
+        ODVHeadDTO oDVHeadDTO = oDVHeadMapper.toDto(updatedODVHead);
 
         restODVHeadMockMvc.perform(put("/api/odv-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedODVHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVHeadDTO)))
             .andExpect(status().isOk());
 
         // Validate the ODVHead in the database
@@ -220,11 +232,12 @@ public class ODVHeadResourceIntTest {
         int databaseSizeBeforeUpdate = oDVHeadRepository.findAll().size();
 
         // Create the ODVHead
+        ODVHeadDTO oDVHeadDTO = oDVHeadMapper.toDto(oDVHead);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restODVHeadMockMvc.perform(put("/api/odv-heads")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(oDVHead)))
+            .content(TestUtil.convertObjectToJsonBytes(oDVHeadDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ODVHead in the database
@@ -263,5 +276,28 @@ public class ODVHeadResourceIntTest {
         assertThat(oDVHead1).isNotEqualTo(oDVHead2);
         oDVHead1.setId(null);
         assertThat(oDVHead1).isNotEqualTo(oDVHead2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ODVHeadDTO.class);
+        ODVHeadDTO oDVHeadDTO1 = new ODVHeadDTO();
+        oDVHeadDTO1.setId(1L);
+        ODVHeadDTO oDVHeadDTO2 = new ODVHeadDTO();
+        assertThat(oDVHeadDTO1).isNotEqualTo(oDVHeadDTO2);
+        oDVHeadDTO2.setId(oDVHeadDTO1.getId());
+        assertThat(oDVHeadDTO1).isEqualTo(oDVHeadDTO2);
+        oDVHeadDTO2.setId(2L);
+        assertThat(oDVHeadDTO1).isNotEqualTo(oDVHeadDTO2);
+        oDVHeadDTO1.setId(null);
+        assertThat(oDVHeadDTO1).isNotEqualTo(oDVHeadDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(oDVHeadMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(oDVHeadMapper.fromId(null)).isNull();
     }
 }

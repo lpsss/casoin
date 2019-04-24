@@ -31,8 +31,8 @@
                 <td>{{customer.telefono}}</td>
                 <td>{{customer.mail}}</td>
                 <td>
-                    <div *ngIf="customer.oDAHead">
-                        <a [routerLink]="['../oda-head', customer.oDAHead?.id, 'view' ]" >{{customer.oDAHead?.id}}</a>
+                    <div *ngIf="customer.oDAHeadId">
+                        <a [routerLink]="['../oda-head', customer.oDAHeadId , 'view' ]" >{{customer.oDAHeadId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

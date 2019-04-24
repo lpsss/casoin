@@ -22,16 +22,16 @@
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_oDAHead">O DA Head</label>
-                    <select class="form-control" id="field_oDAHead" name="oDAHead" [(ngModel)]="oDARow.oDAHead" >
+                    <select class="form-control" id="field_oDAHead" name="oDAHead" [(ngModel)]="oDARow.oDAHeadId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="oDAHeadOption.id === oDARow.oDAHead?.id ? oDARow.oDAHead : oDAHeadOption" *ngFor="let oDAHeadOption of odaheads; trackBy: trackODAHeadById">{{oDAHeadOption.id}}</option>
+                        <option [ngValue]="oDAHeadOption.id" *ngFor="let oDAHeadOption of odaheads; trackBy: trackODAHeadById">{{oDAHeadOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_product">Product</label>
-                    <select class="form-control" id="field_product" name="product" [(ngModel)]="oDARow.product" >
+                    <select class="form-control" id="field_product" name="product" [(ngModel)]="oDARow.productId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="productOption.id === oDARow.product?.id ? oDARow.product : productOption" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.id}}</option>
+                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.id}}</option>
                     </select>
                 </div>
             </div>

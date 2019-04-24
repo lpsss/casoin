@@ -33,8 +33,8 @@
                 <td>{{supplier.ragSociale}}</td>
                 <td>{{supplier.indirizzo}}</td>
                 <td>
-                    <div *ngIf="supplier.oDVHead">
-                        <a [routerLink]="['../odv-head', supplier.oDVHead?.id, 'view' ]" >{{supplier.oDVHead?.id}}</a>
+                    <div *ngIf="supplier.oDVHeadId">
+                        <a [routerLink]="['../odv-head', supplier.oDVHeadId , 'view' ]" >{{supplier.oDVHeadId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

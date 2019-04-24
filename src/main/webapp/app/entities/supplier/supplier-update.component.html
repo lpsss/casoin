@@ -37,9 +37,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_oDVHead">O DV Head</label>
-                    <select class="form-control" id="field_oDVHead" name="oDVHead" [(ngModel)]="supplier.oDVHead" >
+                    <select class="form-control" id="field_oDVHead" name="oDVHead" [(ngModel)]="supplier.oDVHeadId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="oDVHeadOption.id === supplier.oDVHead?.id ? supplier.oDVHead : oDVHeadOption" *ngFor="let oDVHeadOption of odvheads; trackBy: trackODVHeadById">{{oDVHeadOption.id}}</option>
+                        <option [ngValue]="oDVHeadOption.id" *ngFor="let oDVHeadOption of odvheads; trackBy: trackODVHeadById">{{oDVHeadOption.id}}</option>
                     </select>
                 </div>
             </div>

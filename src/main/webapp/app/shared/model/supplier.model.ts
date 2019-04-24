@@ -1,5 +1,3 @@
-import { IODVHead } from 'app/shared/model/odv-head.model';
-
 export interface ISupplier {
     id?: number;
     nome?: string;
@@ -7,7 +5,7 @@ export interface ISupplier {
     piva?: string;
     ragSociale?: string;
     indirizzo?: string;
-    oDVHead?: IODVHead;
+    oDVHeadId?: number;
 }
 
 export class Supplier implements ISupplier {
@@ -18,6 +16,6 @@ export class Supplier implements ISupplier {
         public piva?: string,
         public ragSociale?: string,
         public indirizzo?: string,
-        public oDVHead?: IODVHead
+        public oDVHeadId?: number
     ) {}
 }

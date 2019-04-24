@@ -22,16 +22,16 @@
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_oDVHead">O DV Head</label>
-                    <select class="form-control" id="field_oDVHead" name="oDVHead" [(ngModel)]="oDVRow.oDVHead" >
+                    <select class="form-control" id="field_oDVHead" name="oDVHead" [(ngModel)]="oDVRow.oDVHeadId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="oDVHeadOption.id === oDVRow.oDVHead?.id ? oDVRow.oDVHead : oDVHeadOption" *ngFor="let oDVHeadOption of odvheads; trackBy: trackODVHeadById">{{oDVHeadOption.id}}</option>
+                        <option [ngValue]="oDVHeadOption.id" *ngFor="let oDVHeadOption of odvheads; trackBy: trackODVHeadById">{{oDVHeadOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_product">Product</label>
-                    <select class="form-control" id="field_product" name="product" [(ngModel)]="oDVRow.product" >
+                    <select class="form-control" id="field_product" name="product" [(ngModel)]="oDVRow.productId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="productOption.id === oDVRow.product?.id ? oDVRow.product : productOption" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.id}}</option>
+                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.id}}</option>
                     </select>
                 </div>
             </div>

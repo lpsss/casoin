@@ -1,14 +1,11 @@
-import { IODAHead } from 'app/shared/model/oda-head.model';
-import { IProduct } from 'app/shared/model/product.model';
-
 export interface IODARow {
     id?: number;
     qta?: number;
     costo?: number;
-    oDAHead?: IODAHead;
-    product?: IProduct;
+    oDAHeadId?: number;
+    productId?: number;
 }
 
 export class ODARow implements IODARow {
-    constructor(public id?: number, public qta?: number, public costo?: number, public oDAHead?: IODAHead, public product?: IProduct) {}
+    constructor(public id?: number, public qta?: number, public costo?: number, public oDAHeadId?: number, public productId?: number) {}
 }

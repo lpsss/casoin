@@ -4,6 +4,9 @@ import io.github.jhipster.application.CasoinApp;
 
 import io.github.jhipster.application.domain.Product;
 import io.github.jhipster.application.repository.ProductRepository;
+import io.github.jhipster.application.service.ProductService;
+import io.github.jhipster.application.service.dto.ProductDTO;
+import io.github.jhipster.application.service.mapper.ProductMapper;
 import io.github.jhipster.application.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -53,6 +56,12 @@ public class ProductResourceIntTest {
     private ProductRepository productRepository;
 
     @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -74,7 +83,7 @@ public class ProductResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductResource productResource = new ProductResource(productRepository);
+        final ProductResource productResource = new ProductResource(productService);
         this.restProductMockMvc = MockMvcBuilders.standaloneSetup(productResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -108,9 +117,10 @@ public class ProductResourceIntTest {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         // Create the Product
+        ProductDTO productDTO = productMapper.toDto(product);
         restProductMockMvc.perform(post("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(product)))
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Product in the database
@@ -129,11 +139,12 @@ public class ProductResourceIntTest {
 
         // Create the Product with an existing ID
         product.setId(1L);
+        ProductDTO productDTO = productMapper.toDto(product);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductMockMvc.perform(post("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(product)))
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Product in the database
@@ -197,10 +208,11 @@ public class ProductResourceIntTest {
             .nome(UPDATED_NOME)
             .codice(UPDATED_CODICE)
             .marca(UPDATED_MARCA);
+        ProductDTO productDTO = productMapper.toDto(updatedProduct);
 
         restProductMockMvc.perform(put("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedProduct)))
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isOk());
 
         // Validate the Product in the database
@@ -218,11 +230,12 @@ public class ProductResourceIntTest {
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
         // Create the Product
+        ProductDTO productDTO = productMapper.toDto(product);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductMockMvc.perform(put("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(product)))
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Product in the database
@@ -261,5 +274,28 @@ public class ProductResourceIntTest {
         assertThat(product1).isNotEqualTo(product2);
         product1.setId(null);
         assertThat(product1).isNotEqualTo(product2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ProductDTO.class);
+        ProductDTO productDTO1 = new ProductDTO();
+        productDTO1.setId(1L);
+        ProductDTO productDTO2 = new ProductDTO();
+        assertThat(productDTO1).isNotEqualTo(productDTO2);
+        productDTO2.setId(productDTO1.getId());
+        assertThat(productDTO1).isEqualTo(productDTO2);
+        productDTO2.setId(2L);
+        assertThat(productDTO1).isNotEqualTo(productDTO2);
+        productDTO1.setId(null);
+        assertThat(productDTO1).isNotEqualTo(productDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(productMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(productMapper.fromId(null)).isNull();
     }
 }

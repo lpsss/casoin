@@ -27,8 +27,8 @@
                 </dd>
                 <dt><span>O DV Head</span></dt>
                 <dd>
-                    <div *ngIf="supplier.oDVHead">
-                        <a [routerLink]="['/odv-head', supplier.oDVHead?.id, 'view']">{{supplier.oDVHead?.id}}</a>
+                    <div *ngIf="supplier.oDVHeadId">
+                        <a [routerLink]="['/odv-head', supplier.oDVHeadId, 'view']">{{supplier.oDVHeadId}}</a>
                     </div>
                 </dd>
             </dl>
