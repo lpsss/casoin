@@ -43,4 +43,6 @@ nome String
 codice String
 marca String
 }
+dto * with mapstruct
+service * with serviceClass
 
