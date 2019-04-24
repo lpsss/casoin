@@ -1,0 +1,58 @@
+<div>
+    <h2 id="page-heading">
+        <span>ODA Heads</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-oda-head" [routerLink]="['/oda-head/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new ODA Head
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="oDAHeads">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Nr Ft</span></th>
+            <th><span>Data Fattura</span></th>
+            <th><span>Totale Ft</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let oDAHead of oDAHeads ;trackBy: trackId">
+                <td><a [routerLink]="['/oda-head', oDAHead.id, 'view' ]">{{oDAHead.id}}</a></td>
+                <td>{{oDAHead.nrFt}}</td>
+                <td>{{oDAHead.dataFattura | date:'mediumDate'}}</td>
+                <td>{{oDAHead.totaleFt}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/oda-head', oDAHead.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/oda-head', oDAHead.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'oda-head', { outlets: { popup: oDAHead.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

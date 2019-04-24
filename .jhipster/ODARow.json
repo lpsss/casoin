@@ -1,0 +1,37 @@
+{
+    "name": "ODARow",
+    "fields": [
+        {
+            "fieldName": "qta",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "costo",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "oDAHead",
+            "otherEntityName": "oDAHead",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "oDARow",
+            "relationshipName": "product",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190424205056",
+    "entityTableName": "oda_row",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

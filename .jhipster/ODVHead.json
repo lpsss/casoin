@@ -1,0 +1,40 @@
+{
+    "name": "ODVHead",
+    "fields": [
+        {
+            "fieldName": "nrFt",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dataFattura",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "totaleFt",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "oDVRow",
+            "otherEntityRelationshipName": "oDVHead",
+            "relationshipName": "order"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "supplier",
+            "otherEntityRelationshipName": "oDVHead",
+            "relationshipName": "supplier"
+        }
+    ],
+    "changelogDate": "20190424205053",
+    "entityTableName": "odv_head",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

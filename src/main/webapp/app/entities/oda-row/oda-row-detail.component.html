@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="oDARow">
+            <h2><span>ODA Row</span> {{oDARow.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Qta</span></dt>
+                <dd>
+                    <span>{{oDARow.qta}}</span>
+                </dd>
+                <dt><span>Costo</span></dt>
+                <dd>
+                    <span>{{oDARow.costo}}</span>
+                </dd>
+                <dt><span>O DA Head</span></dt>
+                <dd>
+                    <div *ngIf="oDARow.oDAHead">
+                        <a [routerLink]="['/oda-head', oDARow.oDAHead?.id, 'view']">{{oDARow.oDAHead?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span>Product</span></dt>
+                <dd>
+                    <div *ngIf="oDARow.product">
+                        <a [routerLink]="['/product', oDARow.product?.id, 'view']">{{oDARow.product?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/oda-row', oDARow.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

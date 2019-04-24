@@ -5,6 +5,17 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205053_added_entity_ODVHead.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205054_added_entity_ODVRow.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205055_added_entity_ODAHead.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205056_added_entity_ODARow.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205057_added_entity_Supplier.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205058_added_entity_Customer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205059_added_entity_Product.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190424205054_added_entity_constraints_ODVRow.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205056_added_entity_constraints_ODARow.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205057_added_entity_constraints_Supplier.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190424205058_added_entity_constraints_Customer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
