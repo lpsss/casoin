@@ -1,0 +1,40 @@
+{
+    "name": "ODAHead",
+    "fields": [
+        {
+            "fieldName": "nrFt",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dataFattura",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "totaleFt",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "oDARow",
+            "otherEntityRelationshipName": "oDAHead",
+            "relationshipName": "order"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "customer",
+            "otherEntityRelationshipName": "oDAHead",
+            "relationshipName": "customer"
+        }
+    ],
+    "changelogDate": "20190424205055",
+    "entityTableName": "oda_head",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

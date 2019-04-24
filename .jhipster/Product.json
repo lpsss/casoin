@@ -1,0 +1,40 @@
+{
+    "name": "Product",
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "codice",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "marca",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "oDVRow",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "oDVRow"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "oDARow",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "oDARow"
+        }
+    ],
+    "changelogDate": "20190424205059",
+    "entityTableName": "product",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

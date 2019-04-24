@@ -1,0 +1,46 @@
+entity ODVHead{
+   nrFt Integer
+   dataFattura LocalDate
+   totaleFt Integer
+}
+entity ODVRow{
+ qta Integer
+ costo BigDecimal
+}
+entity ODAHead{
+   nrFt Integer
+   dataFattura LocalDate
+   totaleFt Integer
+}
+entity ODARow{
+ qta Integer
+ costo BigDecimal
+}
+relationship OneToMany{
+ODVHead{order} to ODVRow
+ODVHead{supplier} to Supplier
+ODAHead{order} to ODARow
+ODAHead{customer} to Customer
+Product to ODVRow  
+Product to ODARow
+}
+
+entity Supplier{
+nome String
+cognome String
+piva String
+ragSociale String
+indirizzo String
+}
+entity Customer{
+nome String
+cognome String
+telefono String
+mail String
+}
+entity Product{
+nome String
+codice String
+marca String
+}
+

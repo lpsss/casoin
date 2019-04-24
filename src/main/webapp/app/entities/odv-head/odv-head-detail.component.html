@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="oDVHead">
+            <h2><span>ODV Head</span> {{oDVHead.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Nr Ft</span></dt>
+                <dd>
+                    <span>{{oDVHead.nrFt}}</span>
+                </dd>
+                <dt><span>Data Fattura</span></dt>
+                <dd>
+                    <span>{{oDVHead.dataFattura}}</span>
+                </dd>
+                <dt><span>Totale Ft</span></dt>
+                <dd>
+                    <span>{{oDVHead.totaleFt}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/odv-head', oDVHead.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

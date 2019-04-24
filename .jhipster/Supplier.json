@@ -1,0 +1,42 @@
+{
+    "name": "Supplier",
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cognome",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "piva",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ragSociale",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "indirizzo",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "oDVHead",
+            "otherEntityName": "oDVHead",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190424205057",
+    "entityTableName": "supplier",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

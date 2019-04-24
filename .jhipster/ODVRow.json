@@ -1,0 +1,37 @@
+{
+    "name": "ODVRow",
+    "fields": [
+        {
+            "fieldName": "qta",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "costo",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "oDVHead",
+            "otherEntityName": "oDVHead",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "oDVRow",
+            "relationshipName": "product",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190424205054",
+    "entityTableName": "odv_row",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
